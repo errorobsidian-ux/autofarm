@@ -138,11 +138,13 @@ local slowFarmTask = nil
 AutoTab:CreateToggle({Name = "Auto Garden (Insta-Grow)", CurrentValue = false, Flag = "Toggle1", Callback = function(v) 
     State.farm = v
     print("Auto Garden toggle:", v, "Selected seed:", State.selectedSeed)
+    print("Network variable:", Network)
     if v then
         TeleportToStartCoords()
         
         farmTask = task.spawn(function()
             while State.farm do
+                print("Farm loop running, Network:", Network)
                 if Network then
                     for i = 1, 10 do
                         if State.farm then
@@ -164,6 +166,8 @@ AutoTab:CreateToggle({Name = "Auto Garden (Insta-Grow)", CurrentValue = false, F
                         end
                         if not State.farm then break end
                     end
+                else
+                    print("Network is nil, waiting...")
                 end
                 task.wait(State.fD)
             end
